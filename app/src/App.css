@@ -1,0 +1,43 @@
+*{
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
+  text-align: center;
+  
+}
+.container{
+  display: grid;
+  height: 100vh;
+  grid-template-columns: 10% 1fr 1fr 10%;
+  grid-template-rows: 10% 1fr 1fr 10%;
+   border: solid 3px blue;
+   background-color: #eaeaea;
+}
+.outerFormContainer{
+ display: grid;
+ grid-column: 2/4;
+ grid-row: 2/4;
+ border: solid 3px black;
+
+}
+.innerFormContainer{
+  grid-column: 2/2;
+  grid-row-start: 1;
+  border: dotted 3px black;
+  padding-top: 20px;
+  position: relative;
+  float: right;
+  margin-left: auto;
+  margin-right: 0;
+}
+.contactForm{
+ 
+}
+.textField{
+   display: block;
+   background-color: blue;
+}
+#emailIcon{
+  width: 100%;
+}
+
