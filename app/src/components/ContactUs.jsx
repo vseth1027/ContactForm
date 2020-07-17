@@ -14,6 +14,12 @@ const useStyles = makeStyles((theme) => ({
 function CountactUs() {
 	const classes = useStyles();
 	const emailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+	
+	const [name, setName] = "Jenny";
+	const [email, setEmail] = "";
+	const [showErrors, setShowErrors] = useState(false);
+	
+	const errors: Array<string> = [];
 
 	const [values, setValues] = useState({
 		name: '',
@@ -30,36 +36,23 @@ function CountactUs() {
 	const [isSubmit, setIsSubmit] = useState(false)
 	const firstRender = useRef(true)
 
-	 const formValidation =() =>{
-		if(values.name === ""){
-			setErrorMessage({...errors, nameError: "name field is empty"})
-			console.log("emptyname")
-		}
-		 if(!String(values.email).match(emailFormat)){
-		 	setErrorMessage({...errors, emailError: "email field is invalid"})
-			console.log("bad email")
+	 const formValidation = () =>{
+		 errors = [];	
+		 
+		 const isNameValid = (name !== "")
+		 const isEmailValid = (email !== "") 
+		 
+		 if (!isNameValid) {
+			errors.push("Name is not valid, please try again."); 
 		 }
-		 if(values.subject == ""){
-		 	setErrorMessage({...errors, subjectError: "subject field is empty"})
-		 	console.log("empty sub")
-		}
-		 if(values.message == ""){
-		 	setErrorMessage({...errors, messageError: "message field is empty"})
-			console.log("empty message")	
-		 }
-}
+		 
+		
+	}							
 
-		const handleSubmit = e =>{
-		 	formValidation()
-	 }							
-
-			useEffect(() =>{
-				if(firstRender.current){
-				firstRender.current = false;
-				return
-			 }
-			handleSubmit()
-		},[handleSubmit])
+		useEffect(() =>{
+			if (errors.length > 0) { setShowErrors(true) }
+			else setShowErrors(false)
+		},[errors])
 
 	return(
 		<div className = "container">
@@ -67,12 +60,13 @@ function CountactUs() {
 				<img id = "emailIcon"src = "./emailIcon.png"/>	
 				<div className = "innerFormContainer">
 					<h2> Get in touch </h2>
+					{showErrors && (<p>{errors}</p>)}
 					<form className = {classes.root} onSubmit = {handleSubmit}>	
-				      <TextField label="Name"  placeholder="Jane Doe" type ="text" variant = "outlined" onChange = { e => setValues({...values, name: e.target.value})}/>
+				      <TextField label="Name"  placeholder="Jane Doe" type ="text" variant = "outlined" value={name} onChange = {setName}/>
 				      <TextField label="Email"  placeholder="janedoe@gmail.com"  type ="email"  variant = "outlined"  onChange = { e => setValues({...values, email: e.target.value})}/>
 				      <TextField label="Subject"  placeholder="Help with billing"  type ="text" variant = "outlined"  onChange = { e => setValues({...values, subject: e.target.value})}/>
 				      <TextField label="Message"  placeholder="Joe Doe"  type ="text"  variant = "outlined" multiline rowsMax = "3" onChange = { e => setValues({...values, message: e.target.value})}/>
-				      <Button variant="contained" color="primary" type="submit" onClick = {e => setIsSubmit({isSubmit: !isSubmit})} >  Submit </Button>
+				      <Button variant="contained" color="primary" type="submit" onClick = formValidation  >  Submit </Button>
 	    		   </form>
     			</div>
 			</div>
