@@ -16,7 +16,11 @@ const initialState ={
  		name: "",
  		email: "",
  		subject: "",
- 		message: ""
+ 		message: "",
+ 		 errorMessage: [
+	 	 	{id: '',
+	 	 	value: ''}
+ 		 ]
  	}
 
 const reducer = (state, action) =>{
@@ -33,6 +37,8 @@ const reducer = (state, action) =>{
  			case 'SUBMIT_MESSAGE':
  				return{...state, message: action.payload}
 
+ 			 case 'NAME_ERROR':
+ 			 	return {...state, errorMessage: [state.errorMessage.push({id: state.errorMessage.length, value: action.payload})]}
  			case 'RESET':
 				return initialState 	
 
@@ -46,8 +52,37 @@ const reducer = (state, action) =>{
 
  	const emailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
  	const [state, dispatch] = useReducer(reducer, initialState)
-	const [isSubmit, setIsSubmit] = useState(false)
-	const firstRender = useRef(true)
+ 	const firstRender = useRef(true)
+ 	const [isSubmit, setIsSubmit] = useState(false)
+	//const [errorMessage, setErrorMessage] = useState([])
+
+
+
+ 	const formValidation =() =>{
+ 		let isValid = false;
+ 		if(initialState.name === ""){
+ 			{dispatch({type: 'NAME_ERROR', payload: "name field is invalid"})}
+		console.log("emptyname")
+
+// 		}
+// 		//  if(!String(email).match(emailFormat)){
+// 		//  	setEmailErrorMessage({emailErrorMessage: 'email is invalid'})
+// 		// 	console.log("bad email")
+// 		// }
+// 		//  if(subject == ""){
+// 		//  	setSubjectErrorMessage({subjectErrorMessage: 'subject field is empty'})
+// 		// 	console.log("empty sub")
+// 		// }
+// 		//  if(message === ""){
+// 		//  	setMessageErrorMessage({messageErrorMessage: 'message field is empty'})
+// 		// 	console.log("empty message")	
+// 		// }
+// 		// else{
+// 		// 	isValid = true;
+			
+// 		// }
+ 		console.log(isValid)
+ }}
 
 
 	 const handleSubmit = e =>{
@@ -55,21 +90,25 @@ const reducer = (state, action) =>{
 	 	// if(formValidation()) {
 	 	// 	alert("Email sent!")
 	 	// }
+	 	formValidation()
 
-	 }							
+	 }	
+	 const resetValues =() =>{
+	 	dispatch({type: 'RESET'})
+	 	setIsSubmit({isSubmit: !isSubmit})
+	 }						
 
 	useEffect(() =>{
 		if(firstRender.current){
 		firstRender.current = false;
 		return
 	 }
-	 // formValidation();
-	// 	}, [isSubmit])
-	});
-	
+		handleSubmit()
+		resetValues()
+	},[handleSubmit(), resetValues()]);
+
 
 	return(
-
 		<div className = "container">
 			<div className = "outerFormContainer"> 
 				<img id = "emailIcon"src = "./emailIcon.png"/>	
@@ -80,8 +119,7 @@ const reducer = (state, action) =>{
 				      <TextField label="Email"  placeholder="janedoe@gmail.com"  type ="email"  variant = "outlined" onChange = { e => {dispatch({type: 'SUBMIT_EMAIL', payload: e.target.value})}}/>
 				      <TextField label="Subject"  placeholder="Help with billing"  type ="text" variant = "outlined" onChange = { e => {dispatch({type: 'SUBMIT_SUBJECT', payload: e.target.value})}}/>
 				      <TextField label="Message"  placeholder="Joe Doe"  type ="text"  variant = "outlined" multiline rowsMax = "3" onChange = { e => {dispatch({type: 'SUBMIT_MESSAGE', payload: e.target.value})}}/>
-				    
-				      <Button variant="contained" color="primary" type="submit" onClick = {e => setIsSubmit({isSubmit: true})} >  Submit </Button>
+				      <Button variant="contained" color="primary" type="submit" onClick = {e => setIsSubmit({isSubmit: !isSubmit})} >  Submit </Button>
 	    		   </form>
     			</div>
 			</div>

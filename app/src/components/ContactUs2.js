@@ -21,15 +21,17 @@ const useStyles = makeStyles((theme) => ({
 	const [email, setEmail] = useState('')
 	const [subject, setSubject] = useState('')
 	const [message, setMessage] = useState('')
+	const [isSubmit, setIsSubmit] = useState(false)
 
 	const [nameErrorMessage, setNameErrorMessage] = useState('')
 	const [emailErrorMessage, setEmailErrorMessage] = useState('')
 	const [subjectErrorMessage, setSubjectErrorMessage] = useState('')
 	const [messageErrorMessage, setMessageErrorMessage] = useState('')
 
-	const [isSubmit, setIsSubmit] = useState(false)
+	
 	const firstRender = useRef(true)
 
+	 
 	const formValidation =() =>{
 		let isValid = false;
 		if(name === ""){
@@ -55,12 +57,20 @@ const useStyles = makeStyles((theme) => ({
 		}
 		console.log(isValid)
 }
-	const clearState = () =>{
-		name = 
 
-	}
+const resetValues = () =>{
+	setName({name: ''})
+	setEmail({email: ''})
+	setSubject({subject: ''})
+	setMessage({message: ''})
+	setIsSubmit({isSubmit: false})
+	setNameErrorMessage({nameErrorMessage: ''})
+	setEmailErrorMessage({EmailErrorMessage: ''})
+	setSubjectErrorMessage({subjectErrorMessage: ''})
+	setMessageErrorMessage({messageErrorMessage: ''})
+}
 	 const handleSubmit = e =>{
-	 	e.preventDefault();
+	 	//e.preventDefault();
 	 	if(formValidation()) {
 	 		alert("Email sent!")
 	 	}
@@ -72,8 +82,8 @@ const useStyles = makeStyles((theme) => ({
 		firstRender.current = false;
 		return
 	 }
-	formValidation();
-		}, [isSubmit])
+	handleSubmit()
+},[handleSubmit])
 
 	return(
 
